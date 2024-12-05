@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles2.css" />
+  </head>
+  <body>
+    <div id="header-container"></div>
+
+    <main>
+      <section class="text">
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus aut
+        cumque, provident quo amet blanditiis dicta sunt temporibus sequi
+        perspiciatis, sed quidem? Nulla aliquam in nemo dolorum perspiciatis
+        maxime necessitatibus aliquid quasi culpa amet, quod possimus ipsam
+        eaque consequatur natus consectetur ad sapiente ducimus nobis cumque
+        totam dolores optio distinctio vel. Iure vel et quod ullam nihil
+        accusamus, recusandae deserunt reiciendis necessitatibus temporibus,
+        iste sunt praesentium quia fuga voluptatem veritatis impedit neque.
+        Dolore voluptate facere aspernatur itaque laudantium, similique nam
+        obcaecati omnis quo, fugiat soluta pariatur reiciendis commodi vel,
+        quisquam id veritatis consequuntur voluptas porro odio illum. Beatae,
+        alias ea!
+      </section>
+      <section class="timer" id="timer" style="font-size: 3rem">
+        Timer: 90
+      </section>
+      <section class="text">
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus aut
+        cumque, provident quo amet blanditiis dicta sunt temporibus sequi
+        perspiciatis, sed quidem? Nulla aliquam in nemo dolorum perspiciatis
+        maxime necessitatibus aliquid quasi culpa amet, quod possimus ipsam
+        eaque consequatur natus consectetur ad sapiente ducimus nobis cumque
+        totam dolores optio distinctio vel. Iure vel et quod ullam nihil
+        accusamus, recusandae deserunt reiciendis necessitatibus temporibus,
+        iste sunt praesentium quia fuga voluptatem veritatis impedit neque.
+        Dolore voluptate facere aspernatur itaque laudantium, similique nam
+        obcaecati omnis quo, fugiat soluta pariatur reiciendis commodi vel,
+        quisquam id veritatis consequuntur voluptas porro odio illum. Beatae,
+        alias ea!
+      </section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script>
+      let isAlternate = false;
+      let timerInterval;
+      let timeLeft = 90;
+
+      const headerContainer = document.getElementById("header-container");
+      const footerContainer = document.getElementById("footer-container");
+      const timerElement = document.getElementById("timer");
+
+      function loadHeaderAndFooter(isAlternate) {
+        const headerFile = isAlternate
+          ? "second-header.html"
+          : "first-header.html";
+        const footerFile = isAlternate
+          ? "second-footer.html"
+          : "first-footer.html";
+
+        fetch(headerFile)
+          .then((response) => response.text())
+          .then((html) => {
+            headerContainer.innerHTML = html;
+          })
+          .catch((error) => console.error("Ошибка загрузки хедера:", error));
+
+        fetch(footerFile)
+          .then((response) => response.text())
+          .then((html) => {
+            footerContainer.innerHTML = html;
+          })
+          .catch((error) => console.error("Ошибка загрузки футера:", error));
+      }
+
+      function updateTimer() {
+        timeLeft--;
+        timerElement.textContent = `Timer: ${timeLeft}`;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          isAlternate = !isAlternate;
+          loadHeaderAndFooter(isAlternate);
+          startTimer();
+        }
+      }
+
+      function startTimer() {
+        timeLeft = 90;
+        timerElement.textContent = `Timer: ${timeLeft}`;
+        timerInterval = setInterval(updateTimer, 1000);
+      }
+
+      loadHeaderAndFooter(isAlternate);
+      startTimer();
+    </script>
+  </body>
+</html>
